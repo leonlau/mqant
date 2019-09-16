@@ -25,7 +25,7 @@ import (
 	"github.com/liangdas/mqant/registry"
 	"github.com/liangdas/mqant/selector"
 	"github.com/liangdas/mqant/selector/cache"
-	"github.com/nats-io/go-nats"
+	"github.com/nats-io/nats.go"
 	"github.com/pkg/errors"
 	"hash/crc32"
 	"math"
