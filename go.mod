@@ -40,3 +40,5 @@ require (
 	gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15
 	sigs.k8s.io/yaml v1.1.0 // indirect
 )
+
+replace github.com/liangdas/mqant => github.com/leonlau/mqant/v2 v2.1.1
