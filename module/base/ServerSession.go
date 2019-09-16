@@ -16,8 +16,8 @@ package basemodule
 import (
 	"github.com/leonlau/mqant/v2/module"
 	"github.com/leonlau/mqant/v2/registry"
-	"github.com/leonlau/mqant/v2/rpc"
-	"github.com/leonlau/mqant/v2/rpc/base"
+	mqrpc "github.com/leonlau/mqant/v2/rpc"
+	defaultrpc "github.com/leonlau/mqant/v2/rpc/base"
 )
 
 func NewServerSession(app module.App, name string, node *registry.Node) (module.ServerSession, error) {

@@ -15,11 +15,12 @@ package network
 
 import (
 	"bytes"
-	"github.com/gorilla/websocket"
 	"io"
 	"net"
 	"sync"
 	"time"
+
+	"github.com/gorilla/websocket"
 )
 
 type WebsocketConnSet map[*websocket.Conn]struct{}

@@ -14,11 +14,12 @@
 package basemodule
 
 import (
+	"runtime"
+	"sync"
+
 	"github.com/leonlau/mqant/v2/conf"
 	"github.com/leonlau/mqant/v2/log"
 	"github.com/leonlau/mqant/v2/module"
-	"runtime"
-	"sync"
 )
 
 type DefaultModule struct {

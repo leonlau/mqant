@@ -15,6 +15,7 @@ package basemodule
 
 import (
 	"fmt"
+
 	"github.com/leonlau/mqant/v2/conf"
 	"github.com/leonlau/mqant/v2/log"
 	"github.com/leonlau/mqant/v2/module"

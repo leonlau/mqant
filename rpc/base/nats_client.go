@@ -194,7 +194,6 @@ func (c *NatsClient) Unmarshal(data []byte) (*rpcpb.RPCInfo, error) {
 
 // goroutine safe
 func (c *NatsClient) Marshal(rpcInfo *rpcpb.RPCInfo) ([]byte, error) {
-	//map2:= structs.Map(callInfo)
 	b, err := proto.Marshal(rpcInfo)
 	return b, err
 }

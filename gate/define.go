@@ -14,9 +14,10 @@
 package gate
 
 import (
+	"time"
+
 	"github.com/leonlau/mqant/v2/log"
 	"github.com/leonlau/mqant/v2/network"
-	"time"
 )
 
 var RPC_PARAM_SESSION_TYPE = "SESSION"

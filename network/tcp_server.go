@@ -15,10 +15,11 @@ package network
 
 import (
 	"crypto/tls"
-	"github.com/leonlau/mqant/v2/log"
 	"net"
 	"sync"
 	"time"
+
+	"github.com/leonlau/mqant/v2/log"
 )
 
 type TCPServer struct {

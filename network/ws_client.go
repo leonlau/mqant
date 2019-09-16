@@ -14,10 +14,11 @@
 package network
 
 import (
-	"github.com/gorilla/websocket"
-	"github.com/leonlau/mqant/v2/log"
 	"sync"
 	"time"
+
+	"github.com/gorilla/websocket"
+	"github.com/leonlau/mqant/v2/log"
 )
 
 type WSClient struct {

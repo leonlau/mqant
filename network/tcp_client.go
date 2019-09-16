@@ -14,10 +14,11 @@
 package network
 
 import (
-	"github.com/leonlau/mqant/v2/log"
 	"net"
 	"sync"
 	"time"
+
+	"github.com/leonlau/mqant/v2/log"
 )
 
 type TCPClient struct {

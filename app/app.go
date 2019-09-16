@@ -117,8 +117,6 @@ func (app *DefaultApp) Run(debug bool, mods ...module.Module) error {
 	wdPath := flag.String("wd", "", "Server work directory")
 	confPath := flag.String("conf", "", "Server configuration file path")
 	ProcessID := flag.String("pid", "development", "Server ProcessID?")
-	Logdir := flag.String("log", "", "Log file directory?")
-	BIdir := flag.String("bi", "", "bi file directory?")
 	flag.Parse() //解析输入的参数
 	app.processId = *ProcessID
 	ApplicationDir := ""
@@ -141,19 +139,9 @@ func (app *DefaultApp) Run(debug bool, mods ...module.Module) error {
 	}
 	app.workDir = ApplicationDir
 	defaultConfPath := fmt.Sprintf("/%s/bin/conf/server.json", ApplicationDir)
-	defaultLogPath := fmt.Sprintf("%s/bin/logs", ApplicationDir)
-	defaultBIPath := fmt.Sprintf("%s/bin/bi", ApplicationDir)
 
 	if *confPath == "" {
 		*confPath = defaultConfPath
-	}
-
-	if *Logdir == "" {
-		*Logdir = defaultLogPath
-	}
-
-	if *BIdir == "" {
-		*BIdir = defaultBIPath
 	}
 
 	f, err := os.Open(*confPath)
@@ -161,23 +149,7 @@ func (app *DefaultApp) Run(debug bool, mods ...module.Module) error {
 		//文件不存在
 		panic(fmt.Sprintf("config path error %v", err))
 	}
-	_, err = os.Open(*Logdir)
-	if err != nil {
-		//文件不存在
-		err := os.Mkdir(*Logdir, os.ModePerm) //
-		if err != nil {
-			fmt.Println(err)
-		}
-	}
 
-	_, err = os.Open(*BIdir)
-	if err != nil {
-		//文件不存在
-		err := os.Mkdir(*BIdir, os.ModePerm) //
-		if err != nil {
-			fmt.Println(err)
-		}
-	}
 	var cof conf.Config
 	fmt.Println("Server configuration path :", *confPath)
 	conf.LoadConfig(f.Name()) //加载配置文件

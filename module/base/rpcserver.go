@@ -17,8 +17,8 @@ import (
 	"github.com/leonlau/mqant/v2/conf"
 	"github.com/leonlau/mqant/v2/log"
 	"github.com/leonlau/mqant/v2/module"
-	"github.com/leonlau/mqant/v2/rpc"
-	"github.com/leonlau/mqant/v2/rpc/base"
+	mqrpc "github.com/leonlau/mqant/v2/rpc"
+	defaultrpc "github.com/leonlau/mqant/v2/rpc/base"
 )
 
 type rpcserver struct {

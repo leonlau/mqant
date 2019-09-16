@@ -15,12 +15,13 @@ package network
 
 import (
 	"crypto/tls"
-	"github.com/gorilla/websocket"
-	"github.com/leonlau/mqant/v2/log"
 	"net"
 	"net/http"
 	"sync"
 	"time"
+
+	"github.com/gorilla/websocket"
+	"github.com/leonlau/mqant/v2/log"
 )
 
 type WSServer struct {

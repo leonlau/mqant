@@ -1,16 +1,17 @@
 package server
 
 import (
+	"strconv"
+	"strings"
+	"sync"
+
 	"github.com/leonlau/mqant/v2/conf"
 	"github.com/leonlau/mqant/v2/log"
 	"github.com/leonlau/mqant/v2/module"
 	"github.com/leonlau/mqant/v2/registry"
-	"github.com/leonlau/mqant/v2/rpc"
-	"github.com/leonlau/mqant/v2/rpc/base"
+	mqrpc "github.com/leonlau/mqant/v2/rpc"
+	defaultrpc "github.com/leonlau/mqant/v2/rpc/base"
 	"github.com/leonlau/mqant/v2/utils/lib/addr"
-	"strconv"
-	"strings"
-	"sync"
 )
 
 type rpcServer struct {

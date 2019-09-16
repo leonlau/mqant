@@ -16,17 +16,18 @@ package basemodule
 import (
 	"context"
 	"encoding/json"
+	"sync"
+	"time"
+
 	"github.com/leonlau/mqant/v2/conf"
 	"github.com/leonlau/mqant/v2/module"
-	"github.com/leonlau/mqant/v2/rpc"
-	"github.com/leonlau/mqant/v2/rpc/pb"
+	mqrpc "github.com/leonlau/mqant/v2/rpc"
+	rpcpb "github.com/leonlau/mqant/v2/rpc/pb"
 	"github.com/leonlau/mqant/v2/selector"
 	"github.com/leonlau/mqant/v2/server"
 	"github.com/leonlau/mqant/v2/service"
 	"github.com/leonlau/mqant/v2/utils"
 	"github.com/pkg/errors"
-	"sync"
-	"time"
 )
 
 type StatisticalMethod struct {

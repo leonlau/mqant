@@ -4,10 +4,11 @@
 package modules
 
 import (
+	"time"
+
 	"github.com/leonlau/mqant/v2/conf"
 	"github.com/leonlau/mqant/v2/module"
-	"github.com/leonlau/mqant/v2/module/modules/timer"
-	"time"
+	timewheel "github.com/leonlau/mqant/v2/module/modules/timer"
 )
 
 var TimerModule = func() module.Module {

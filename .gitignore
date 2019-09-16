@@ -6,6 +6,7 @@ pkg
 *.o
 *.a
 *.so
+.DS_Store
 
 # Folders
 _obj

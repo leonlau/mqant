@@ -5,7 +5,6 @@ import (
 	"time"
 
 	consul "github.com/hashicorp/consul/api"
-
 	"github.com/leonlau/mqant/v2/registry"
 )
 
