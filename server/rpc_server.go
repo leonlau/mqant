@@ -55,7 +55,7 @@ func (s *rpcServer) Init(opts ...Option) error {
 func (s *rpcServer) OnInit(module module.Module, app module.App, settings *conf.ModuleSettings) error {
 	server, err := defaultrpc.NewRPCServer(app, module) //默认会创建一个本地的RPC
 	if err != nil {
-		log.Warning("Dial: %s", err)
+		log.Warnf("Dial: %s", err)
 	}
 	s.server = server
 	s.opts.Address = server.Addr()
@@ -139,7 +139,7 @@ func (s *rpcServer) ServiceRegister() error {
 	s.Unlock()
 
 	if !registered {
-		log.Info("Registering node: %s", node.Id)
+		log.Infof("Registering node: %s", node.Id)
 	}
 
 	// create registry options
@@ -201,7 +201,7 @@ func (s *rpcServer) ServiceDeregister() error {
 		Nodes:   []*registry.Node{node},
 	}
 
-	log.Info("Deregistering node: %s", node.Id)
+	log.Infof("Deregistering node: %s", node.Id)
 	if err := config.Registry.Deregister(service); err != nil {
 		return err
 	}
@@ -232,12 +232,12 @@ func (s *rpcServer) Start() error {
 
 func (s *rpcServer) Stop() error {
 	if s.server != nil {
-		log.Info("RPCServer closeing id(%s)", s.id)
+		log.Infof("RPCServer closeing id(%s)", s.id)
 		err := s.server.Done()
 		if err != nil {
-			log.Warning("RPCServer close fail id(%s) error(%s)", s.id, err)
+			log.Warnf("RPCServer close fail id(%s) error(%s)", s.id, err)
 		} else {
-			log.Info("RPCServer close success id(%s)", s.id)
+			log.Infof("RPCServer close success id(%s)", s.id)
 		}
 		s.server = nil
 	}

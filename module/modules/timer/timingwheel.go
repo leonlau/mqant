@@ -165,7 +165,7 @@ func (tw *TimeWheel) scanAndRunTask(l *list.List) {
 					case error:
 						rn = r.(error).Error()
 					}
-					log.Error("TimeWheel Job Recover %v", rn)
+					log.Errorf("TimeWheel Job Recover %v", rn)
 				}
 			}()
 			task.job(task.data)

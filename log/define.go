@@ -13,7 +13,10 @@
 // limitations under the License.
 package log
 
-import "github.com/liangdas/mqant/utils"
+import (
+	"github.com/liangdas/mqant/utils"
+	"github.com/prometheus/common/log"
+)
 
 // A SpanID refers to a single span.
 type TraceSpan interface {
@@ -46,5 +49,20 @@ func (this *TraceSpanImp) ExtractSpan() TraceSpan {
 	return &TraceSpanImp{
 		Trace: this.Trace,
 		Span:  utils.GenerateID().String(),
+	}
+}
+
+func CreateTrace(trace, span string) TraceSpan {
+	return &TraceSpanImp{
+		Trace: trace,
+		Span:  span,
+	}
+}
+
+func TInfo(span TraceSpan, format string, a ...interface{}) {
+	if span != nil {
+		log.Info(format, a, String("trace", span.TraceId()), String("span", span.SpanId()))
+	} else {
+		log.Infof(format, a...)
 	}
 }

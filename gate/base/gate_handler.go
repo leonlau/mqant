@@ -131,7 +131,7 @@ func (h *handler) Bind(span log.TraceSpan, Sessionid string, Userid string) (res
 				}
 			} else {
 				//解析持久化数据失败
-				log.Warning("Sesssion Resolve fail %s", err.Error())
+				log.Warnf("Sesssion Resolve fail %s", err.Error())
 			}
 		}
 		//数据持久化
@@ -191,7 +191,7 @@ func (h *handler) Push(span log.TraceSpan, Sessionid string, Settings map[string
 	if h.gate.GetStorageHandler() != nil && agent.(gate.Agent).GetSession().GetUserId() != "" {
 		err := h.gate.GetStorageHandler().Storage(agent.(gate.Agent).GetSession())
 		if err != nil {
-			log.Warning("gate session storage failure : %s", err.Error())
+			log.Warnf("gate session storage failure : %s", err.Error())
 		}
 	}
 
@@ -213,7 +213,7 @@ func (h *handler) Set(span log.TraceSpan, Sessionid string, key string, value st
 	if h.gate.GetStorageHandler() != nil && agent.(gate.Agent).GetSession().GetUserId() != "" {
 		err := h.gate.GetStorageHandler().Storage(agent.(gate.Agent).GetSession())
 		if err != nil {
-			log.Error("gate session storage failure : %s", err.Error())
+			log.Errorf("gate session storage failure : %s", err.Error())
 		}
 	}
 
@@ -235,7 +235,7 @@ func (h *handler) Remove(span log.TraceSpan, Sessionid string, key string) (resu
 	if h.gate.GetStorageHandler() != nil && agent.(gate.Agent).GetSession().GetUserId() != "" {
 		err := h.gate.GetStorageHandler().Storage(agent.(gate.Agent).GetSession())
 		if err != nil {
-			log.Error("gate session storage failure :%s", err.Error())
+			log.Errorf("gate session storage failure :%s", err.Error())
 		}
 	}
 
@@ -273,7 +273,7 @@ func (h *handler) SendBatch(span log.TraceSpan, SessionidStr string, topic strin
 		}
 		e := agent.(gate.Agent).WriteMsg(topic, body)
 		if e != nil {
-			log.Warning("WriteMsg error: %v", e.Error())
+			log.Warnf("WriteMsg error: %v", e.Error())
 		} else {
 			count++
 		}
@@ -285,7 +285,7 @@ func (h *handler) BroadCast(span log.TraceSpan, topic string, body []byte) (int6
 	h.sessions.Range(func(key, agent interface{}) bool {
 		e := agent.(gate.Agent).WriteMsg(topic, body)
 		if e != nil {
-			log.Warning("WriteMsg error:", e.Error())
+			log.Warnf("WriteMsg error:", e.Error())
 		} else {
 			count++
 		}

@@ -52,7 +52,7 @@ func (handler *WSHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	conn, err := handler.upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		log.Warning("upgrade error: %v", err)
+		log.Warnf("upgrade error: %v", err)
 		return
 	}
 	conn.SetReadLimit(int64(handler.maxMsgLen))
@@ -74,15 +74,15 @@ func (handler *WSHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func (server *WSServer) Start() {
 	ln, err := net.Listen("tcp", server.Addr)
 	if err != nil {
-		log.Warning("%v", err)
+		log.Warnf("%v", err)
 	}
 
 	if server.HTTPTimeout <= 0 {
 		server.HTTPTimeout = 10 * time.Second
-		log.Warning("invalid HTTPTimeout, reset to %v", server.HTTPTimeout)
+		log.Warnf("invalid HTTPTimeout, reset to %v", server.HTTPTimeout)
 	}
 	if server.NewAgent == nil {
-		log.Warning("NewAgent must not be nil")
+		log.Warnf("NewAgent must not be nil")
 	}
 	if server.Tls {
 		tlsConf := new(tls.Config)
@@ -92,7 +92,7 @@ func (server *WSServer) Start() {
 			ln = tls.NewListener(ln, tlsConf)
 			log.Info("WS Listen TLS load success")
 		} else {
-			log.Warning("ws_server tls :%v", err)
+			log.Warnf("ws_server tls :%v", err)
 		}
 	}
 	server.ln = ln
@@ -114,7 +114,7 @@ func (server *WSServer) Start() {
 		WriteTimeout:   server.HTTPTimeout,
 		MaxHeaderBytes: 1024,
 	}
-	log.Info("WS Listen :%s", server.Addr)
+	log.Infof("WS Listen :%s", server.Addr)
 	go httpServer.Serve(ln)
 }
 

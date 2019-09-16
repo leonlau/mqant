@@ -124,7 +124,7 @@ func (c *NatsClient) on_request_handle() error {
 			buf := make([]byte, 1024)
 			l := runtime.Stack(buf, false)
 			errstr := string(buf[:l])
-			log.Error("%s\n ----Stack----\n%s", rn, errstr)
+			log.Errorf("%s\n ----Stack----\n%s", rn, errstr)
 		}
 	}()
 	subs, err := c.app.Transport().SubscribeSync(c.callbackqueueName)
@@ -147,7 +147,7 @@ func (c *NatsClient) on_request_handle() error {
 
 		resultInfo, err := c.UnmarshalResult(m.Data)
 		if err != nil {
-			log.Error("Unmarshal faild", err)
+			log.Errorf("Unmarshal faild", err)
 		} else {
 			correlation_id := resultInfo.Cid
 			clinetCallInfo := c.callinfos.Get(correlation_id)
@@ -158,7 +158,7 @@ func (c *NatsClient) on_request_handle() error {
 				close(clinetCallInfo.(ClinetCallInfo).call)
 			} else {
 				//可能客户端已超时了，但服务端处理完还给回调了
-				log.Warning("rpc callback no found : [%s]", correlation_id)
+				log.Warnf("rpc callback no found : [%s]", correlation_id)
 			}
 		}
 	}

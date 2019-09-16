@@ -51,29 +51,29 @@ func (client *WSClient) init() {
 
 	if client.ConnNum <= 0 {
 		client.ConnNum = 1
-		log.Warning("invalid ConnNum, reset to %v", client.ConnNum)
+		log.Warnf("invalid ConnNum, reset to %v", client.ConnNum)
 	}
 	if client.ConnectInterval <= 0 {
 		client.ConnectInterval = 3 * time.Second
-		log.Warning("invalid ConnectInterval, reset to %v", client.ConnectInterval)
+		log.Warnf("invalid ConnectInterval, reset to %v", client.ConnectInterval)
 	}
 	if client.PendingWriteNum <= 0 {
 		client.PendingWriteNum = 100
-		log.Warning("invalid PendingWriteNum, reset to %v", client.PendingWriteNum)
+		log.Warnf("invalid PendingWriteNum, reset to %v", client.PendingWriteNum)
 	}
 	if client.MaxMsgLen <= 0 {
 		client.MaxMsgLen = 4096
-		log.Warning("invalid MaxMsgLen, reset to %v", client.MaxMsgLen)
+		log.Warnf("invalid MaxMsgLen, reset to %v", client.MaxMsgLen)
 	}
 	if client.HandshakeTimeout <= 0 {
 		client.HandshakeTimeout = 10 * time.Second
-		log.Warning("invalid HandshakeTimeout, reset to %v", client.HandshakeTimeout)
+		log.Warnf("invalid HandshakeTimeout, reset to %v", client.HandshakeTimeout)
 	}
 	if client.NewAgent == nil {
 		log.Error("NewAgent must not be nil")
 	}
 	if client.conns != nil {
-		log.Warning("client is running")
+		log.Warnf("client is running")
 	}
 
 	client.conns = make(WebsocketConnSet)
@@ -90,7 +90,7 @@ func (client *WSClient) dial() *websocket.Conn {
 			return conn
 		}
 
-		log.Warning("connect to %v error: %v", client.Addr, err)
+		log.Warnf("connect to %v error: %v", client.Addr, err)
 		time.Sleep(client.ConnectInterval)
 		continue
 	}

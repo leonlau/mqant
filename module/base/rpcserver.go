@@ -33,20 +33,20 @@ func (s *rpcserver) OnInit(module module.Module, app module.App, settings *conf.
 	s.settings = settings
 	server, err := defaultrpc.NewRPCServer(app, module) //默认会创建一个本地的RPC
 	if err != nil {
-		log.Warning("Dial: %s", err)
+		log.Warnf("Dial: %s", err)
 	}
 
 	s.server = server
-	log.Info("RPCServer init success id(%s) version(%s)", s.settings.Id, module.Version())
+	log.Infof("RPCServer init success id(%s) version(%s)", s.settings.Id, module.Version())
 }
 func (s *rpcserver) OnDestroy() {
 	if s.server != nil {
-		log.Info("RPCServer closeing id(%s)", s.settings.Id)
+		log.Infof("RPCServer closeing id(%s)", s.settings.Id)
 		err := s.server.Done()
 		if err != nil {
-			log.Warning("RPCServer close fail id(%s) error(%s)", s.settings.Id, err)
+			log.Warnf("RPCServer close fail id(%s) error(%s)", s.settings.Id, err)
 		} else {
-			log.Info("RPCServer close success id(%s)", s.settings.Id)
+			log.Infof("RPCServer close success id(%s)", s.settings.Id)
 		}
 		s.server = nil
 	}

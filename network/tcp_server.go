@@ -36,18 +36,18 @@ type TCPServer struct {
 
 func (server *TCPServer) Start() {
 	server.init()
-	log.Info("TCP Listen :%s", server.Addr)
+	log.Infof("TCP Listen :%s", server.Addr)
 	go server.run()
 }
 
 func (server *TCPServer) init() {
 	ln, err := net.Listen("tcp", server.Addr)
 	if err != nil {
-		log.Warning("%v", err)
+		log.Warnf("%v", err)
 	}
 
 	if server.NewAgent == nil {
-		log.Warning("NewAgent must not be nil")
+		log.Warnf("NewAgent must not be nil")
 	}
 	if server.Tls {
 		tlsConf := new(tls.Config)
@@ -57,7 +57,7 @@ func (server *TCPServer) init() {
 			ln = tls.NewListener(ln, tlsConf)
 			log.Info("TCP Listen TLS load success")
 		} else {
-			log.Warning("tcp_server tls :%v", err)
+			log.Warnf("tcp_server tls :%v", err)
 		}
 	}
 
@@ -80,7 +80,7 @@ func (server *TCPServer) run() {
 				if max := 1 * time.Second; tempDelay > max {
 					tempDelay = max
 				}
-				log.Info("accept error: %v; retrying in %v", err, tempDelay)
+				log.Infof("accept error: %v; retrying in %v", err, tempDelay)
 				time.Sleep(tempDelay)
 				continue
 			}

@@ -95,7 +95,7 @@ func (s *NatsServer) on_request_handle() error {
 			buf := make([]byte, 1024)
 			l := runtime.Stack(buf, false)
 			errstr := string(buf[:l])
-			log.Error("%s\n ----Stack----\n%s", rn, errstr)
+			log.Errorf("%s\n ----Stack----\n%s", rn, errstr)
 		}
 	}()
 	subs, err := s.app.Transport().SubscribeSync(s.addr)

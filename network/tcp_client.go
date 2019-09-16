@@ -54,21 +54,21 @@ func (client *TCPClient) init() {
 
 	if client.ConnNum <= 0 {
 		client.ConnNum = 1
-		log.Warning("invalid ConnNum, reset to %v", client.ConnNum)
+		log.Warnf("invalid ConnNum, reset to %v", client.ConnNum)
 	}
 	if client.ConnectInterval <= 0 {
 		client.ConnectInterval = 3 * time.Second
-		log.Info("invalid ConnectInterval, reset to %v", client.ConnectInterval)
+		log.Infof("invalid ConnectInterval, reset to %v", client.ConnectInterval)
 	}
 	if client.PendingWriteNum <= 0 {
 		client.PendingWriteNum = 100
-		log.Warning("invalid PendingWriteNum, reset to %v", client.PendingWriteNum)
+		log.Warnf("invalid PendingWriteNum, reset to %v", client.PendingWriteNum)
 	}
 	if client.NewAgent == nil {
-		log.Warning("NewAgent must not be nil")
+		log.Warnf("NewAgent must not be nil")
 	}
 	if client.conns != nil {
-		log.Warning("client is running")
+		log.Warnf("client is running")
 	}
 
 	client.conns = make(ConnSet)
@@ -82,7 +82,7 @@ func (client *TCPClient) dial() net.Conn {
 			return conn
 		}
 
-		log.Warning("connect to %v error: %v", client.Addr, err)
+		log.Warnf("connect to %v error: %v", client.Addr, err)
 		time.Sleep(client.ConnectInterval)
 		continue
 	}

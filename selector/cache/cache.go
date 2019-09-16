@@ -275,7 +275,7 @@ func (c *cacheSelector) run(name string) {
 			if c.quit() {
 				return
 			}
-			log.Warning("%v", err)
+			log.Warnf("%v", err)
 			time.Sleep(time.Second)
 			continue
 		}
@@ -285,7 +285,7 @@ func (c *cacheSelector) run(name string) {
 			if c.quit() {
 				return
 			}
-			log.Warning("%v", err)
+			log.Warnf("%v", err)
 			continue
 		}
 	}

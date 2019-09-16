@@ -14,6 +14,7 @@
 package defaultrpc
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/liangdas/mqant/gate"
 	"github.com/liangdas/mqant/log"
@@ -25,7 +26,6 @@ import (
 	"runtime"
 	"sync"
 	"time"
-	"encoding/json"
 )
 
 type RPCServer struct {
@@ -54,7 +54,7 @@ func NewRPCServer(app module.App, module module.Module) (mqrpc.RPCServer, error)
 
 	nats_server, err := NewNatsServer(app, rpc_server)
 	if err != nil {
-		log.Error("AMQPServer Dial: %s", err)
+		log.Errorf("AMQPServer Dial: %s", err)
 	}
 	rpc_server.nats_server = nats_server
 
@@ -166,7 +166,7 @@ func (s *RPCServer) on_call_handle(calls <-chan mqrpc.CallInfo, done chan error)
 					if s.listener != nil {
 						s.listener.OnTimeOut(callInfo.RpcInfo.Fn, callInfo.RpcInfo.Expired)
 					} else {
-						log.Warning("timeout: This is Call", s.module.GetType(), callInfo.RpcInfo.Fn, callInfo.RpcInfo.Expired, time.Now().UnixNano()/1000000)
+						log.Warnf("timeout: This is Call", s.module.GetType(), callInfo.RpcInfo.Fn, callInfo.RpcInfo.Expired, time.Now().UnixNano()/1000000)
 					}
 				} else {
 					s.runFunc(callInfo)
@@ -184,7 +184,7 @@ func (s *RPCServer) doCallback(callInfo mqrpc.CallInfo) {
 		//需要回复的才回复
 		err := callInfo.Agent.(mqrpc.MQServer).Callback(callInfo)
 		if err != nil {
-			log.Warning("rpc callback erro :\n%s", err.Error())
+			log.Warnf("rpc callback erro :\n%s", err.Error())
 		}
 
 		//if callInfo.RpcInfo.Expired < (time.Now().UnixNano() / 1000000) {
@@ -199,7 +199,7 @@ func (s *RPCServer) doCallback(callInfo mqrpc.CallInfo) {
 	} else {
 		//对于不需要回复的消息,可以判断一下是否出现错误，打印一些警告
 		if callInfo.Result.Error != "" {
-			log.Warning("rpc callback erro :\n%s", callInfo.Result.Error)
+			log.Warnf("rpc callback erro :\n%s", callInfo.Result.Error)
 		}
 	}
 }
@@ -227,7 +227,7 @@ func (s *RPCServer) runFunc(callInfo mqrpc.CallInfo) {
 			case error:
 				rn = r.(error).Error()
 			}
-			log.Error("recover", rn)
+			log.Errorf("recover", rn)
 			_errorCallback(callInfo.RpcInfo.Cid, rn, nil)
 		}
 	}()
@@ -316,15 +316,15 @@ func (s *RPCServer) runFunc(callInfo mqrpc.CallInfo) {
 					}
 					in[k] = reflect.ValueOf(ty)
 				case []uint8:
-					if reflect.TypeOf(ty).AssignableTo(f.Type().In(k)){
+					if reflect.TypeOf(ty).AssignableTo(f.Type().In(k)) {
 						in[k] = reflect.ValueOf(ty)
-					}else{
+					} else {
 						elemp := reflect.New(f.Type().In(k))
-						err:=json.Unmarshal(v2,elemp.Interface())
-						if err!=nil{
-							log.Error("%v []uint8--> %v error with='%v'",callInfo.RpcInfo.Fn,f.Type().In(k),err)
+						err := json.Unmarshal(v2, elemp.Interface())
+						if err != nil {
+							log.Errorf("%v []uint8--> %v error with='%v'", callInfo.RpcInfo.Fn, f.Type().In(k), err)
 							in[k] = reflect.ValueOf(ty)
-						}else{
+						} else {
 							in[k] = elemp.Elem()
 						}
 					}

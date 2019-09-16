@@ -18,7 +18,6 @@ import (
 	"bufio"
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -38,27 +37,12 @@ func LoadConfig(Path string) {
 	if Conf.Rpc.MaxCoroutine == 0 {
 		Conf.Rpc.MaxCoroutine = 100
 	}
-	if Conf.Rpc.UDPMaxPacketSize == 0 {
-		Conf.Rpc.UDPMaxPacketSize = 4096
-	}
-	for _, module := range Conf.Module {
-		for _, ModuleSettings := range module {
-			if ModuleSettings.UDP != nil {
-				ModuleSettings.UDP.UDPMaxPacketSize = Conf.Rpc.UDPMaxPacketSize
-			}
-		}
-	}
-
 }
 
 type Config struct {
-	Log      map[string]interface{}
-	BI       map[string]interface{}
-	OP       map[string]interface{}
 	Rpc      Rpc
 	Module   map[string][]*ModuleSettings
 	Mqtt     Mqtt
-	Master   Master
 	Settings map[string]interface{}
 }
 
@@ -69,34 +53,11 @@ type Rpc struct {
 	Log              bool //是否打印RPC的日志
 }
 
-type Rabbitmq struct {
-	Uri          string
-	Exchange     string
-	ExchangeType string
-	Queue        string
-	BindingKey   string //
-	ConsumerTag  string //消费者TAG
-}
-
-type Redis struct {
-	Uri   string //redis://:[password]@[ip]:[port]/[db]
-	Queue string
-}
-
-type UDP struct {
-	Uri              string //udp服务端监听ip		0.0.0.0:8080
-	Port             int    //端口
-	UDPMaxPacketSize int
-}
-
 type ModuleSettings struct {
 	Id        string
 	Host      string
 	ProcessID string
 	Settings  map[string]interface{}
-	Rabbitmq  *Rabbitmq
-	Redis     *Redis
-	UDP       *UDP
 }
 
 type Mqtt struct {
@@ -104,51 +65,6 @@ type Mqtt struct {
 	ReadPackLoop     int // 最大读取包队列缓存
 	ReadTimeout      int // 读取超时
 	WriteTimeout     int // 写入超时
-}
-
-type SSH struct {
-	Host     string
-	Port     int
-	User     string
-	Password string
-}
-
-/**
-host:port
-*/
-func (s *SSH) GetSSHHost() string {
-	return fmt.Sprintf("%s:%d", s.Host, s.Port)
-}
-
-type Process struct {
-	ProcessID string
-	Host      string
-	//执行文件
-	Execfile string
-	//日志文件目录
-	//pid.nohup.log
-	//pid.access.log
-	//pid.error.log
-	LogDir string
-	//自定义的参数
-	Args map[string]interface{}
-}
-
-type Master struct {
-	Enable  bool
-	WebRoot string
-	WebHost string
-	SSH     []*SSH
-	Process []*Process
-}
-
-func (m *Master) GetSSH(host string) *SSH {
-	for _, ssh := range m.SSH {
-		if ssh.Host == host {
-			return ssh
-		}
-	}
-	return nil
 }
 
 func readFileInto(path string) error {

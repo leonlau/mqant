@@ -23,7 +23,10 @@ import (
 	"github.com/liangdas/mqant/module/base"
 	"github.com/liangdas/mqant/module/modules"
 	"github.com/liangdas/mqant/registry"
+	"github.com/liangdas/mqant/selector"
+	"github.com/liangdas/mqant/selector/cache"
 	"github.com/nats-io/go-nats"
+	"github.com/pkg/errors"
 	"hash/crc32"
 	"math"
 	"os"
@@ -34,10 +37,6 @@ import (
 	"sync"
 	"syscall"
 	"time"
-	//"github.com/liangdas/mqant/registry/etcdv3"
-	"github.com/liangdas/mqant/selector"
-	"github.com/liangdas/mqant/selector/cache"
-	"github.com/pkg/errors"
 )
 
 type resultInfo struct {
@@ -68,7 +67,7 @@ func newOptions(opts ...module.Option) module.Options {
 	if opt.Nats == nil {
 		nc, err := nats.Connect(nats.DefaultURL)
 		if err != nil {
-			log.Error("nats agent: %s", err.Error())
+			log.Errorf("nats agent: %s", err.Error())
 			//panic(fmt.Sprintf("nats agent: %s", err.Error()))
 		}
 		opt.Nats = nc
@@ -101,7 +100,7 @@ type DefaultApp struct {
 	settings      conf.Config
 	serverList    sync.Map
 	processId     string
-	workDir     	string
+	workDir       string
 	opts          module.Options
 	routes        map[string]func(app module.App, Type string, hash string) module.ServerSession
 	defaultRoutes func(app module.App, Type string, hash string) module.ServerSession
@@ -140,7 +139,7 @@ func (app *DefaultApp) Run(debug bool, mods ...module.Module) error {
 		}
 
 	}
-	app.workDir=ApplicationDir
+	app.workDir = ApplicationDir
 	defaultConfPath := fmt.Sprintf("/%s/bin/conf/server.json", ApplicationDir)
 	defaultLogPath := fmt.Sprintf("%s/bin/logs", ApplicationDir)
 	defaultBIPath := fmt.Sprintf("%s/bin/bi", ApplicationDir)
@@ -184,10 +183,8 @@ func (app *DefaultApp) Run(debug bool, mods ...module.Module) error {
 	conf.LoadConfig(f.Name()) //加载配置文件
 	cof = conf.Conf
 	app.Configure(cof) //解析配置信息
-	log.InitLog(debug, *ProcessID, *Logdir, cof.Log)
-	log.InitBI(debug, *ProcessID, *BIdir, cof.BI)
 
-	log.Info("mqant %v starting up", app.version)
+	log.Infof("mqant %v starting up", app.version)
 
 	if app.configurationLoaded != nil {
 		app.configurationLoaded(app)
@@ -222,7 +219,7 @@ func (app *DefaultApp) Run(debug bool, mods ...module.Module) error {
 	case <-timeout.C:
 		panic(fmt.Sprintf("mqant close timeout (signal: %v)", sig))
 	case <-wait:
-		log.Info("mqant closing down (signal: %v)", sig)
+		log.Infof("mqant closing down (signal: %v)", sig)
 	}
 	return nil
 }
@@ -343,7 +340,7 @@ func (app *DefaultApp) GetServersByType(serviceName string) []module.ServerSessi
 	sessions := make([]module.ServerSession, 0)
 	services, err := app.opts.Selector.GetService(serviceName)
 	if err != nil {
-		log.Warning("GetServersByType %v", err)
+		log.Warnf("GetServersByType %v", err)
 		return sessions
 	}
 	for _, service := range services {
@@ -353,7 +350,7 @@ func (app *DefaultApp) GetServersByType(serviceName string) []module.ServerSessi
 			if !ok {
 				s, err := basemodule.NewServerSession(app, serviceName, node)
 				if err != nil {
-					log.Warning("NewServerSession %v", err)
+					log.Warnf("NewServerSession %v", err)
 				} else {
 					app.serverList.Store(node.Id, s)
 					sessions = append(sessions, s)

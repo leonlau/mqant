@@ -169,7 +169,7 @@ func (this *Gate) OnAppConfigurationLoaded(app module.App) {
 	this.BaseModule.OnAppConfigurationLoaded(app) //这是必须的
 	err := app.AddRPCSerialize("gate", this)
 	if err != nil {
-		log.Warning("Adding session structures failed to serialize interfaces %s", err.Error())
+		log.Warnf("Adding session structures failed to serialize interfaces %s", err.Error())
 	}
 }
 func (this *Gate) OnInit(subclass module.RPCModule, app module.App, settings *conf.ModuleSettings, opts ...gate.Option) {

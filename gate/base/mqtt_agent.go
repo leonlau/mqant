@@ -70,7 +70,7 @@ func (this *agent) OnInit(gate gate.Gate, conn network.Conn) error {
 	this.isclose = false
 	this.rev_num = 0
 	this.send_num = 0
-	this.last_storage_heartbeat_data_time=time.Duration(time.Now().UnixNano())
+	this.last_storage_heartbeat_data_time = time.Duration(time.Now().UnixNano())
 	return nil
 }
 func (a *agent) IsClosed() bool {
@@ -102,7 +102,7 @@ func (a *agent) Run() (err error) {
 		if err := recover(); err != nil {
 			buff := make([]byte, 4096)
 			runtime.Stack(buff, false)
-			log.Error("conn.serve() panic(%v)\n info:%s", err, string(buff))
+			log.Errorf("conn.serve() panic(%v)\n info:%s", err, string(buff))
 		}
 		a.Close()
 
@@ -122,11 +122,11 @@ func (a *agent) Run() (err error) {
 	var pack *mqtt.Pack
 	pack, err = mqtt.ReadPack(a.r)
 	if err != nil {
-		log.Error("Read login pack error", err)
+		log.Errorf("Read login pack error", err)
 		return
 	}
 	if pack.GetType() != mqtt.CONNECT {
-		log.Error("Recive login pack's type error:%v \n", pack.GetType())
+		log.Errorf("Recive login pack's type error:%v \n", pack.GetType())
 		return
 	}
 	info, ok := (pack.GetVariable()).(*mqtt.Connect)
@@ -147,7 +147,7 @@ func (a *agent) Run() (err error) {
 		"Settings":  make(map[string]string),
 	})
 	if err != nil {
-		log.Error("gate create agent fail", err.Error())
+		log.Errorf("gate create agent fail", err.Error())
 		return
 	}
 	a.session.JudgeGuest(a.gate.GetJudgeGuest())
@@ -182,7 +182,7 @@ func (a *agent) ConnTime() time.Time {
 func (a *agent) OnRecover(pack *mqtt.Pack) {
 	err := a.Wait()
 	if err != nil {
-		log.Warning("Gate OnRecover error [%v]", err)
+		log.Warnf("Gate OnRecover error [%v]", err)
 		pub := pack.GetVariable().(*mqtt.Publish)
 		a.toResult(a, *pub.GetTopic(), nil, err.Error())
 	} else {
@@ -212,7 +212,7 @@ func (a *agent) recoverworker(pack *mqtt.Pack) {
 		if r := recover(); r != nil {
 			buff := make([]byte, 4096)
 			runtime.Stack(buff, false)
-			log.Error("Gate recoverworker error [%v] stack : %v",r, string(buff))
+			log.Errorf("Gate recoverworker error [%v] stack : %v", r, string(buff))
 		}
 	}()
 
@@ -310,39 +310,39 @@ func (a *agent) recoverworker(pack *mqtt.Pack) {
 
 				e := serverSession.CallNRArgs(topics[1], ArgsType, args)
 				if e != nil {
-					log.Warning("Gate RPC", e.Error())
+					log.Warnf("Gate RPC %s", e.Error())
 				}
 			}
 		}
 		//if a.GetSession().GetUserId() != "" {
-			//这个链接已经绑定Userid
-			a.lock.Lock()
-			interval := int64(a.last_storage_heartbeat_data_time) + int64(a.gate.Options().Heartbeat) //单位纳秒
-			a.lock.Unlock()
-			if interval < time.Now().UnixNano() {
-				if a.gate.GetStorageHandler() != nil {
-					a.lock.Lock()
-					a.last_storage_heartbeat_data_time = time.Duration(time.Now().UnixNano())
-					a.lock.Unlock()
-					a.gate.GetStorageHandler().Heartbeat(a.GetSession())
-				}
+		//这个链接已经绑定Userid
+		a.lock.Lock()
+		interval := int64(a.last_storage_heartbeat_data_time) + int64(a.gate.Options().Heartbeat) //单位纳秒
+		a.lock.Unlock()
+		if interval < time.Now().UnixNano() {
+			if a.gate.GetStorageHandler() != nil {
+				a.lock.Lock()
+				a.last_storage_heartbeat_data_time = time.Duration(time.Now().UnixNano())
+				a.lock.Unlock()
+				a.gate.GetStorageHandler().Heartbeat(a.GetSession())
 			}
+		}
 		//}
 	case mqtt.PINGREQ:
 		//客户端发送的心跳包
 		//if a.GetSession().GetUserId() != "" {
-			//这个链接已经绑定Userid
-			a.lock.Lock()
-			interval := int64(a.last_storage_heartbeat_data_time) + int64(a.gate.Options().Heartbeat) //单位纳秒
-			a.lock.Unlock()
-			if interval < time.Now().UnixNano() {
-				if a.gate.GetStorageHandler() != nil {
-					a.lock.Lock()
-					a.last_storage_heartbeat_data_time = time.Duration(time.Now().UnixNano())
-					a.lock.Unlock()
-					a.gate.GetStorageHandler().Heartbeat(a.GetSession())
-				}
+		//这个链接已经绑定Userid
+		a.lock.Lock()
+		interval := int64(a.last_storage_heartbeat_data_time) + int64(a.gate.Options().Heartbeat) //单位纳秒
+		a.lock.Unlock()
+		if interval < time.Now().UnixNano() {
+			if a.gate.GetStorageHandler() != nil {
+				a.lock.Lock()
+				a.last_storage_heartbeat_data_time = time.Duration(time.Now().UnixNano())
+				a.lock.Unlock()
+				a.gate.GetStorageHandler().Heartbeat(a.GetSession())
 			}
+		}
 		//}
 	}
 }

@@ -1,131 +1,87 @@
-// Copyright 2014 mqant Author. All Rights Reserved.
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//      http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
 package log
 
 import (
-	beegolog "github.com/liangdas/mqant/log/beego"
-	"github.com/liangdas/mqant/utils"
+	"fmt"
+
+	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 )
 
-var beego *beegolog.BeeLogger
-var bi *beegolog.BeeLogger
+var globalLogger *zap.Logger
 
-func InitLog(debug bool, ProcessID string, Logdir string, settings map[string]interface{}) {
-	beego = NewBeegoLogger(debug, ProcessID, Logdir, settings)
-}
-func InitBI(debug bool, ProcessID string, Logdir string, settings map[string]interface{}) {
-	bi = NewBeegoLogger(debug, ProcessID, Logdir, settings)
-}
-func LogBeego() *beegolog.BeeLogger {
-	if beego == nil {
-		beego = beegolog.NewLogger()
+func init() {
+	zapLog := zap.NewProductionConfig()
+	zapLog.Level.SetLevel(zap.DebugLevel)
+	zapLog.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
+	zapLog.DisableStacktrace = true
+	zapLog.DisableCaller = false
+	logger, err := zapLog.Build(zap.AddCallerSkip(1))
+
+	if err != nil {
+		panic(err)
 	}
-	return beego
+	globalLogger = logger
+
 }
 
-func BiBeego() *beegolog.BeeLogger {
-	return bi
+func Options(opts ...zap.Option) {
+	globalLogger = globalLogger.WithOptions(opts...)
 }
 
-func CreateRootTrace() TraceSpan {
-	return &TraceSpanImp{
-		Trace: utils.GenerateID().String(),
-		Span:  utils.GenerateID().String(),
-	}
+func Debug(msg string, fields ...zapcore.Field) {
+	globalLogger.Debug(msg, fields...)
+}
+func Info(msg string, fields ...zapcore.Field) {
+	globalLogger.Info(msg, fields...)
+}
+func Warn(msg string, fields ...zapcore.Field) {
+	globalLogger.Warn(msg, fields...)
+}
+func Error(msg string, fields ...zapcore.Field) {
+	globalLogger.Error(msg, fields...)
+}
+func Fatal(msg string, fields ...zapcore.Field) {
+	globalLogger.Panic(msg, fields...)
 }
 
-func CreateTrace(trace, span string) TraceSpan {
-	return &TraceSpanImp{
-		Trace: trace,
-		Span:  span,
-	}
+func Debugf(msg string, args ...interface{}) {
+	globalLogger.Debug(fmt.Sprintf(msg, args...))
+}
+func Infof(msg string, args ...interface{}) {
+	globalLogger.Info(fmt.Sprintf(msg, args...))
+}
+func Warnf(msg string, args ...interface{}) {
+	globalLogger.Warn(fmt.Sprintf(msg, args...))
+}
+func Errorf(msg string, args ...interface{}) {
+	globalLogger.Error(fmt.Sprintf(msg, args...))
+}
+func Fatalf(msg string, args ...interface{}) {
+	globalLogger.Panic(fmt.Sprintf(msg, args...))
 }
 
-func BiReport(msg string) {
-	//gLogger.doPrintf(debugLevel, printDebugLevel, format, a...)
-	l := BiBeego()
-	if l != nil {
-		l.BiReport(msg)
-	}
-}
-
-func Debug(format string, a ...interface{}) {
-	//gLogger.doPrintf(debugLevel, printDebugLevel, format, a...)
-	LogBeego().Debug(nil, format, a...)
-}
-func Info(format string, a ...interface{}) {
-	//gLogger.doPrintf(releaseLevel, printReleaseLevel, format, a...)
-	LogBeego().Info(nil, format, a...)
-}
-
-func Error(format string, a ...interface{}) {
-	//gLogger.doPrintf(errorLevel, printErrorLevel, format, a...)
-	LogBeego().Error(nil, format, a...)
-}
-
-func Warning(format string, a ...interface{}) {
-	//gLogger.doPrintf(fatalLevel, printFatalLevel, format, a...)
-	LogBeego().Warning(nil, format, a...)
-}
-
-func TDebug(span TraceSpan, format string, a ...interface{}) {
-	if span != nil {
-		LogBeego().Debug(
-			&beegolog.BeegoTraceSpan{
-				Trace: span.TraceId(),
-				Span:  span.SpanId(),
-			}, format, a...)
-	} else {
-		LogBeego().Debug(nil, format, a...)
-	}
-}
-func TInfo(span TraceSpan, format string, a ...interface{}) {
-	if span != nil {
-		LogBeego().Info(
-			&beegolog.BeegoTraceSpan{
-				Trace: span.TraceId(),
-				Span:  span.SpanId(),
-			}, format, a...)
-	} else {
-		LogBeego().Info(nil, format, a...)
-	}
-}
-
-func TError(span TraceSpan, format string, a ...interface{}) {
-	if span != nil {
-		LogBeego().Error(
-			&beegolog.BeegoTraceSpan{
-				Trace: span.TraceId(),
-				Span:  span.SpanId(),
-			}, format, a...)
-	} else {
-		LogBeego().Error(nil, format, a...)
-	}
-}
-
-func TWarning(span TraceSpan, format string, a ...interface{}) {
-	if span != nil {
-		LogBeego().Warning(
-			&beegolog.BeegoTraceSpan{
-				Trace: span.TraceId(),
-				Span:  span.SpanId(),
-			}, format, a...)
-	} else {
-		LogBeego().Warning(nil, format, a...)
-	}
-}
-
-func Close() {
-	LogBeego().Close()
-}
+var (
+	Err        = zap.Error
+	Time       = zap.Time
+	Any        = zap.Any
+	Binary     = zap.Binary
+	Bool       = zap.Bool
+	ByteString = zap.ByteString
+	Duration   = zap.Duration
+	Stack      = zap.Stack
+	String     = zap.String
+	Strings    = zap.Strings
+	Stringer   = zap.Stringer
+	Uint8      = zap.Uint8
+	Uint16     = zap.Uint16
+	Uint32     = zap.Uint32
+	Uint64     = zap.Uint64
+	Uint       = zap.Uint
+	Int8       = zap.Int8
+	Int16      = zap.Int16
+	Int32      = zap.Int32
+	Int64      = zap.Int64
+	Int        = zap.Int
+	Float32    = zap.Float32
+	Float64    = zap.Float64
+)
