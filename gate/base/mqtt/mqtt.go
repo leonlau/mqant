@@ -19,7 +19,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"github.com/liangdas/mqant/log"
+	"github.com/leonlau/mqant/v2/log"
 	"io"
 )
 
@@ -590,7 +590,7 @@ func ReadPack(r *bufio.Reader) (pack *Pack, err error) {
 	// Pass, nothing to do.
 	default:
 		//将pack剩余中的数据读了
-		log.Error("No Find Pack(%v) length(%v)", pack.msg_type, pack.length)
+		log.Errorf("No Find Pack(%v) length(%v)", pack.msg_type, pack.length)
 		if pack.length > 0 {
 			buf := make([]byte, pack.length)
 			_, err = io.ReadFull(r, buf)

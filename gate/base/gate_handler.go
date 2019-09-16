@@ -15,9 +15,8 @@ package basegate
 
 import (
 	"fmt"
-
-	"github.com/liangdas/mqant/gate"
-	"github.com/liangdas/mqant/log"
+	"github.com/leonlau/mqant/v2/gate"
+	"github.com/leonlau/mqant/v2/log"
 	"github.com/pkg/errors"
 	"strings"
 	"sync"

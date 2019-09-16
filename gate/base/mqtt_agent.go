@@ -17,19 +17,18 @@ import (
 	"bufio"
 	"encoding/json"
 	"fmt"
+	"github.com/leonlau/mqant/v2/conf"
+	"github.com/leonlau/mqant/v2/gate"
+	"github.com/leonlau/mqant/v2/gate/base/mqtt"
+	"github.com/leonlau/mqant/v2/log"
+	"github.com/leonlau/mqant/v2/module"
+	"github.com/leonlau/mqant/v2/network"
+	"github.com/leonlau/mqant/v2/rpc/util"
+	"github.com/leonlau/mqant/v2/utils"
 	"runtime"
 	"strings"
-	"time"
-
-	"github.com/liangdas/mqant/conf"
-	"github.com/liangdas/mqant/gate"
-	"github.com/liangdas/mqant/gate/base/mqtt"
-	"github.com/liangdas/mqant/log"
-	"github.com/liangdas/mqant/module"
-	"github.com/liangdas/mqant/network"
-	"github.com/liangdas/mqant/rpc/util"
-	"github.com/liangdas/mqant/utils"
 	"sync"
+	"time"
 )
 
 //type resultInfo struct {

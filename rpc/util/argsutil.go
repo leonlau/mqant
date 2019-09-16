@@ -16,9 +16,9 @@ package argsutil
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/liangdas/mqant/log"
-	"github.com/liangdas/mqant/module"
-	"github.com/liangdas/mqant/utils"
+	"github.com/leonlau/mqant/v2/log"
+	"github.com/leonlau/mqant/v2/module"
+	"github.com/leonlau/mqant/v2/utils"
 	"reflect"
 )
 

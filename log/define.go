@@ -14,8 +14,7 @@
 package log
 
 import (
-	"github.com/liangdas/mqant/utils"
-	"github.com/prometheus/common/log"
+	"github.com/leonlau/mqant/v2/utils"
 )
 
 // A SpanID refers to a single span.
@@ -61,8 +60,8 @@ func CreateTrace(trace, span string) TraceSpan {
 
 func TInfo(span TraceSpan, format string, a ...interface{}) {
 	if span != nil {
-		log.Info(format, a, String("trace", span.TraceId()), String("span", span.SpanId()))
+		Infof(format, a, String("trace", span.TraceId()), String("span", span.SpanId()))
 	} else {
-		log.Infof(format, a...)
+		Infof(format, a...)
 	}
 }

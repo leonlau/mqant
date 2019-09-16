@@ -14,9 +14,8 @@
 package network
 
 import (
-	"github.com/gorilla/websocket"
-	//"github.com/liangdas/mqant/log"
 	"bytes"
+	"github.com/gorilla/websocket"
 	"io"
 	"net"
 	"sync"

@@ -14,7 +14,7 @@
 package network
 
 import (
-	"github.com/liangdas/mqant/log"
+	"github.com/leonlau/mqant/v2/log"
 	"net"
 	"sync"
 	"time"

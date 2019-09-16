@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/liangdas/mqant/selector"
+	"github.com/leonlau/mqant/v2/selector"
 )
 
 type ttlKey struct{}

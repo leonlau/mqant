@@ -3,7 +3,7 @@ package selector
 import (
 	"testing"
 
-	"github.com/liangdas/mqant/registry"
+	"github.com/leonlau/mqant/v2/registry"
 )
 
 func TestFilterEndpoint(t *testing.T) {

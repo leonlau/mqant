@@ -16,10 +16,10 @@ package basegate
 import (
 	"fmt"
 	"github.com/golang/protobuf/proto"
-	"github.com/liangdas/mqant/gate"
-	"github.com/liangdas/mqant/log"
-	"github.com/liangdas/mqant/module"
-	"github.com/liangdas/mqant/utils"
+	"github.com/leonlau/mqant/v2/gate"
+	"github.com/leonlau/mqant/v2/log"
+	"github.com/leonlau/mqant/v2/module"
+	"github.com/leonlau/mqant/v2/utils"
 	"strconv"
 )
 

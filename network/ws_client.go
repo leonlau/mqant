@@ -15,7 +15,7 @@ package network
 
 import (
 	"github.com/gorilla/websocket"
-	"github.com/liangdas/mqant/log"
+	"github.com/leonlau/mqant/v2/log"
 	"sync"
 	"time"
 )

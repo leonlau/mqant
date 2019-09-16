@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/liangdas/mqant/registry"
-	"github.com/liangdas/mqant/server"
+	"github.com/leonlau/mqant/v2/registry"
+	"github.com/leonlau/mqant/v2/server"
 )
 
 type Service interface {

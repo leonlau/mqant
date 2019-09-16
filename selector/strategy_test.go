@@ -1,9 +1,8 @@
 package selector
 
 import (
+	"github.com/leonlau/mqant/v2/registry"
 	"testing"
-
-	"github.com/liangdas/mqant/registry"
 )
 
 func TestStrategies(t *testing.T) {

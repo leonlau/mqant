@@ -3,7 +3,7 @@ package selector
 import (
 	"testing"
 
-	"github.com/liangdas/mqant/registry/mock"
+	"github.com/leonlau/mqant/v2/registry/mock"
 )
 
 func TestDefaultSelector(t *testing.T) {

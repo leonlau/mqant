@@ -16,12 +16,12 @@ package defaultrpc
 import (
 	"fmt"
 	"github.com/golang/protobuf/proto"
-	"github.com/liangdas/mqant/log"
-	"github.com/liangdas/mqant/module"
-	"github.com/liangdas/mqant/rpc"
-	"github.com/liangdas/mqant/rpc/pb"
-	"github.com/liangdas/mqant/rpc/util"
-	"github.com/liangdas/mqant/utils/uuid"
+	"github.com/leonlau/mqant/v2/log"
+	"github.com/leonlau/mqant/v2/module"
+	"github.com/leonlau/mqant/v2/rpc"
+	"github.com/leonlau/mqant/v2/rpc/pb"
+	"github.com/leonlau/mqant/v2/rpc/util"
+	"github.com/leonlau/mqant/v2/utils/uuid"
 	"time"
 )
 

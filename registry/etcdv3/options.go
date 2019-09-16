@@ -2,7 +2,7 @@ package etcdv3
 
 import (
 	"context"
-	"github.com/liangdas/mqant/registry"
+	"github.com/leonlau/mqant/v2/registry"
 )
 
 type authKey struct{}

@@ -7,8 +7,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/liangdas/mqant/log"
-	"github.com/liangdas/mqant/server"
+	"github.com/leonlau/mqant/v2/log"
+	"github.com/leonlau/mqant/v2/server"
 )
 
 func NewService(opts ...Option) Service {

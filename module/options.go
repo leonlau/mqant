@@ -1,8 +1,8 @@
 package module
 
 import (
-	"github.com/liangdas/mqant/registry"
-	"github.com/liangdas/mqant/selector"
+	"github.com/leonlau/mqant/v2/registry"
+	"github.com/leonlau/mqant/v2/selector"
 	"github.com/nats-io/nats.go"
 	"time"
 )

@@ -15,9 +15,9 @@ package basemodule
 
 import (
 	"fmt"
-	"github.com/liangdas/mqant/conf"
-	"github.com/liangdas/mqant/log"
-	"github.com/liangdas/mqant/module"
+	"github.com/leonlau/mqant/v2/conf"
+	"github.com/leonlau/mqant/v2/log"
+	"github.com/leonlau/mqant/v2/module"
 )
 
 func NewModuleManager() (m *ModuleManager) {

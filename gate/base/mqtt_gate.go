@@ -15,15 +15,14 @@ package basegate
 
 import (
 	"fmt"
+	"github.com/leonlau/mqant/v2/conf"
+	"github.com/leonlau/mqant/v2/gate"
+	"github.com/leonlau/mqant/v2/log"
+	"github.com/leonlau/mqant/v2/module"
+	"github.com/leonlau/mqant/v2/module/base"
+	"github.com/leonlau/mqant/v2/network"
 	"reflect"
 	"time"
-
-	"github.com/liangdas/mqant/conf"
-	"github.com/liangdas/mqant/gate"
-	"github.com/liangdas/mqant/log"
-	"github.com/liangdas/mqant/module"
-	"github.com/liangdas/mqant/module/base"
-	"github.com/liangdas/mqant/network"
 )
 
 var RPC_PARAM_SESSION_TYPE = gate.RPC_PARAM_SESSION_TYPE

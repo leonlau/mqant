@@ -14,10 +14,10 @@
 package basemodule
 
 import (
-	"github.com/liangdas/mqant/module"
-	"github.com/liangdas/mqant/registry"
-	"github.com/liangdas/mqant/rpc"
-	"github.com/liangdas/mqant/rpc/base"
+	"github.com/leonlau/mqant/v2/module"
+	"github.com/leonlau/mqant/v2/registry"
+	"github.com/leonlau/mqant/v2/rpc"
+	"github.com/leonlau/mqant/v2/rpc/base"
 )
 
 func NewServerSession(app module.App, name string, node *registry.Node) (module.ServerSession, error) {
